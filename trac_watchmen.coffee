@@ -1,6 +1,9 @@
 cronJob = require("cron").CronJob
 CSV = require("comma-separated-values")
 
+USER = "USER ID"
+PASS = "PASSWORD"
+
 TRAC_URL = "TRAC URL"
 CSV_URL = "TRAC CSV QUERY URL"
 ROOM = "ROOM NAME"
@@ -21,7 +24,7 @@ module.exports = (robot) ->
 
   new cronJob("*/5 * * * * *", () ->
     tickets = robot.brain.get("tickets")
-    robot.http(CSV_URL).get() (err, res, body) ->
+    robot.http(CSV_URL).auth(USER, PASS).get() (err, res, body) ->
       return if !!err || res.statusCode != 200
 
       csv = new CSV(body, {header: true})
